@@ -6,123 +6,259 @@
 
 ## ⚡ 给 AI 编程工具的集成指南
 
-> 本节是写给 AI 的。如果你是 Claude Code、Codex、Gemini CLI 或其他 AI 编程助手，请阅读此节了解如何加载和使用这个 Skill。
+> 本节是写给 AI 的。如果你是 Claude Code、Antigravity、Codex CLI、Gemini CLI 或其他 AI 编程助手，请阅读此节了解如何加载和使用这个 Skill。
 
 ### 这个 Skill 是什么
 
-`dev-planner` 是一个标准的 `.skill` 文件（本质是 ZIP 包），包含一个完整的对话式开发规划工作流。加载后，你将获得以下能力：
+`dev-planner` 是一套对话式开发规划工作流，核心文件是 `SKILL.md`。加载后，你将获得以下能力：
 
-- 通过多轮选项对话引导用户完善开发需求
-- 自动生成三份企业级开发文档（`DEV_DOCUMENT.md` / `API文档` / `风格指南`）
-- 编排 Agent 子团队（后端/前端/测试/文档）并行开发
+- 通过多轮选项对话引导用户完善开发需求（零术语，小白友好）
+- 自动生成三份企业级开发文档（`DEV_DOCUMENT.md` / `API 文档` / `风格指南`）
+- 编排 Agent 子团队（后端 / 前端 / 测试 / 文档）并行开发
 - 自动检测并调用环境中可用的 MCP 工具（GitHub / 数据库 / Docker / web_search）
 - 全程文档驱动开发，节点测试门控，中文 Git 提交
 
 ---
 
-### 📥 下载方式
+### 📥 文件下载（所有平台通用）
 
 ```bash
-# 方式一：直接下载 .skill 文件
-curl -L https://github.com/cat9999aaa/dev-planner-skill/releases/latest/download/dev-planner.skill -o dev-planner.skill
-
-# 方式二：克隆整个仓库
-git clone https://github.com/cat9999aaa/dev-planner-skill.git
-
-# 方式三：只下载 SKILL.md（最小化集成）
+# 下载核心 Skill 文件
 curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md -o SKILL.md
+
+# 下载完整模板包（建议一并下载，AI 生成文档时会引用）
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md -o dev-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/api-doc-template.md -o api-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/style-guide-template.md -o style-guide-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/plan-template.md -o plan-template.md
+
+# 或者克隆整个仓库
+git clone https://github.com/cat9999aaa/dev-planner-skill.git
 ```
 
 ---
 
 ### 🔧 各平台集成方式
 
-#### Claude Code
+---
+
+#### Antigravity
+
+Antigravity 有两种安装方式，根据使用范围选择：
+
+**方式一：项目级安装（只对当前项目生效）**
 
 ```bash
-# 安装 skill
-claude skill install dev-planner.skill
+# 在你的项目根目录下执行
+mkdir -p .agent/skills/dev-planner
 
-# 或从 URL 直接安装
-claude skill install https://github.com/cat9999aaa/dev-planner-skill/releases/latest/download/dev-planner.skill
+# 下载 SKILL.md 到技能目录
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o .agent/skills/dev-planner/SKILL.md
 
-# 验证安装
-claude skill list
-# 应出现：dev-planner — 🚀 超级开发规划师
+# 下载模板文件（可选，提升文档生成质量）
+mkdir -p .agent/skills/dev-planner/references
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md \
+  -o .agent/skills/dev-planner/references/dev-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/api-doc-template.md \
+  -o .agent/skills/dev-planner/references/api-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/style-guide-template.md \
+  -o .agent/skills/dev-planner/references/style-guide-template.md
 ```
 
-安装后，当用户说"帮我开发一个项目"、"我想做个网站"等，Claude Code 会自动触发此 Skill。
+最终目录结构：
+
+```
+你的项目/
+└── .agent/
+    └── skills/
+        └── dev-planner/
+            ├── SKILL.md          ← 核心文件
+            └── references/       ← 模板文件（可选）
+```
+
+**方式二：全局安装（对所有项目生效）**
+
+```bash
+# Linux / macOS
+mkdir -p ~/.antigravity/skills/dev-planner
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o ~/.antigravity/skills/dev-planner/SKILL.md
+
+# Windows（PowerShell）
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.antigravity\skills\dev-planner"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md" `
+  -OutFile "$env:USERPROFILE\.antigravity\skills\dev-planner\SKILL.md"
+```
+
+或者，如果你已经把仓库克隆到本地，可以用 CLI 工具链接：
+
+```bash
+# 进入 skill 目录
+cd dev-planner-skill/dev-planner
+
+# 链接为全局 skill
+ag skill link --global
+```
 
 ---
 
-#### OpenClaw / 其他支持 Skill 的 Claude 客户端
+#### Claude Code
+
+Claude Code 通过 `CLAUDE.md` 文件加载上下文指令。
+
+**项目级安装（推荐）：**
 
 ```bash
-# 下载 .skill 文件后，在客户端设置中选择"安装 Skill"
-# 上传 dev-planner.skill 文件即可
+# 在项目根目录下载 SKILL.md，重命名为 CLAUDE.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o CLAUDE.md
+
+# 同时下载模板文件到 references/ 目录
+mkdir -p references
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md \
+  -o references/dev-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/api-doc-template.md \
+  -o references/api-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/style-guide-template.md \
+  -o references/style-guide-template.md
 ```
 
-或手动加载 SKILL.md 内容到系统提示词（System Prompt）：
+**全局安装（对所有项目生效）：**
 
 ```bash
-# 获取 SKILL.md 内容
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md
-# 将输出内容粘贴到你的客户端系统提示词区域
+# Linux / macOS
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o ~/.claude/CLAUDE.md
+
+# Windows（PowerShell）
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md" `
+  -OutFile "$env:USERPROFILE\.claude\CLAUDE.md"
 ```
+
+Claude Code 启动后会自动读取 `CLAUDE.md`，当用户提到"帮我开发项目"等关键词时自动触发此 Skill。
 
 ---
 
 #### OpenAI Codex CLI
 
-Codex 目前不支持 `.skill` 格式，推荐通过系统提示词注入：
+Codex CLI 通过项目根目录的 `codex.md` 文件加载指令。
 
 ```bash
-# 下载 SKILL.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md -o dev-planner-skill.md
+# 在项目根目录执行
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o codex.md
 
-# 在 Codex 会话中注入（将文件内容作为 system message 传入）
-codex --system-file dev-planner-skill.md "帮我开发一个任务管理系统"
+# 下载模板文件
+mkdir -p references
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md \
+  -o references/dev-doc-template.md
+# （其余模板同上，按需下载）
 ```
 
-或在你的 Codex 配置文件中引用：
-
-```json
-{
-  "systemPrompt": "<dev-planner-skill.md 的全部内容>"
-}
-```
+Codex CLI 启动时会自动读取当前目录的 `codex.md`，无需额外配置。
 
 ---
 
 #### Google Gemini CLI
 
-```bash
-# 下载并注入系统提示
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md -o dev-planner-skill.md
+Gemini CLI 通过项目根目录的 `GEMINI.md` 文件加载指令（类似 Claude Code 的 `CLAUDE.md`）。
 
-# Gemini CLI 系统提示注入方式
-gemini --system "$(cat dev-planner-skill.md)" "我想做一个微信机器人"
+**项目级安装：**
+
+```bash
+# 在项目根目录执行
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o GEMINI.md
+```
+
+**全局安装：**
+
+```bash
+# Linux / macOS
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o ~/.gemini/GEMINI.md
 ```
 
 ---
 
-#### Antigravity / Aider / Continue.dev / Cursor 等工具
+#### Cursor
 
-对于所有支持自定义系统提示词（System Prompt）的 AI 编程工具，通用集成方式：
+Cursor 通过 `.cursorrules` 文件（或新版 `.cursor/rules/` 目录）加载项目级规则。
 
 ```bash
-# 第一步：获取 Skill 内容
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md
+# 方式一：使用 .cursorrules（旧版兼容）
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o .cursorrules
 
-# 第二步：将输出的全部内容复制到工具的 System Prompt / 自定义指令区域
-
-# 第三步：同时建议下载 references/ 目录下的四个模板文件放到工作目录，
-# 供 AI 在生成文档时参考：
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md -o dev-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/api-doc-template.md -o api-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/style-guide-template.md -o style-guide-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/plan-template.md -o plan-template.md
+# 方式二：使用新版规则目录（Cursor 0.43+）
+mkdir -p .cursor/rules
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o .cursor/rules/dev-planner.mdc
 ```
+
+---
+
+#### Aider
+
+Aider 通过 `--system` 参数或配置文件加载自定义指令。
+
+```bash
+# 先下载 SKILL.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o .aider-skill.md
+
+# 启动时注入
+aider --system "$(cat .aider-skill.md)"
+```
+
+或写入 Aider 配置文件 `.aider.conf.yml`：
+
+```yaml
+# .aider.conf.yml
+system: |
+  # 在此粘贴 SKILL.md 的完整内容
+```
+
+---
+
+#### Continue.dev（VS Code / JetBrains 插件）
+
+在 Continue 配置文件 `~/.continue/config.json` 中添加系统提示：
+
+```bash
+# 先下载 SKILL.md 内容
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+  -o /tmp/dev-planner-skill.md
+```
+
+然后编辑 `~/.continue/config.json`：
+
+```json
+{
+  "models": [
+    {
+      "title": "Claude with Dev Planner",
+      "provider": "anthropic",
+      "model": "claude-opus-4-6",
+      "systemMessage": "<粘贴 SKILL.md 的完整内容>"
+    }
+  ]
+}
+```
+
+---
+
+#### 通用方案（适用于任何支持系统提示词的 AI 工具）
+
+如果你使用的工具不在上面列表中，只要它支持自定义系统提示词（System Prompt），都可以用这个方法：
+
+```bash
+# 获取 SKILL.md 内容，复制到剪贴板
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md
+```
+
+将输出内容粘贴到你的工具的「系统提示词」、「自定义指令」或「角色设定」区域即可。
 
 ---
 
@@ -286,14 +422,14 @@ AI：[后端 Agent] 数据库设计完成 ✅
 
 ### 文档结构
 
-| 文件 | 说明 |
-|------|------|
-| `dev-planner/SKILL.md` | 核心 Skill，定义了完整的工作流程和规范 |
-| `dev-planner/references/dev-doc-template.md` | 开发文档模板（含架构图/ER图/环境配置等） |
-| `dev-planner/references/api-doc-template.md` | API 接口文档模板 |
-| `dev-planner/references/style-guide-template.md` | 代码规范+设计系统模板 |
-| `dev-planner/references/plan-template.md` | 规划方案输出模板 |
-| `dev-planner.skill` | 打包后的 Skill 文件（可直接安装） |
+| 文件                                             | 说明                                     |
+| ------------------------------------------------ | ---------------------------------------- |
+| `dev-planner/SKILL.md`                           | 核心 Skill，定义了完整的工作流程和规范   |
+| `dev-planner/references/dev-doc-template.md`     | 开发文档模板（含架构图/ER图/环境配置等） |
+| `dev-planner/references/api-doc-template.md`     | API 接口文档模板                         |
+| `dev-planner/references/style-guide-template.md` | 代码规范+设计系统模板                    |
+| `dev-planner/references/plan-template.md`        | 规划方案输出模板                         |
+| `dev-planner.skill`                              | 打包后的 Skill 文件（可直接安装）        |
 
 ---
 
