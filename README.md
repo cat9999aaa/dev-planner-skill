@@ -24,13 +24,13 @@
 
 ```bash
 # 下载核心 Skill 文件
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md -o SKILL.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md -o SKILL.md
 
 # 下载完整模板包（建议一并下载，AI 生成文档时会引用）
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md -o dev-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/api-doc-template.md -o api-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/style-guide-template.md -o style-guide-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/plan-template.md -o plan-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/dev-doc-template.md -o dev-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/api-doc-template.md -o api-doc-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/style-guide-template.md -o style-guide-template.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/plan-template.md -o plan-template.md
 
 # 或者克隆整个仓库
 git clone https://github.com/cat9999aaa/dev-planner-skill.git
@@ -53,16 +53,16 @@ Antigravity 有两种安装方式，根据使用范围选择：
 mkdir -p .agent/skills/dev-planner
 
 # 下载 SKILL.md 到技能目录
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o .agent/skills/dev-planner/SKILL.md
 
 # 下载模板文件（可选，提升文档生成质量）
 mkdir -p .agent/skills/dev-planner/references
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/dev-doc-template.md \
   -o .agent/skills/dev-planner/references/dev-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/api-doc-template.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/api-doc-template.md \
   -o .agent/skills/dev-planner/references/api-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/style-guide-template.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/style-guide-template.md \
   -o .agent/skills/dev-planner/references/style-guide-template.md
 ```
 
@@ -82,12 +82,12 @@ curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-
 ```bash
 # Linux / macOS
 mkdir -p ~/.antigravity/skills/dev-planner
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o ~/.antigravity/skills/dev-planner/SKILL.md
 
 # Windows（PowerShell）
 New-Item -ItemType Directory -Force "$env:USERPROFILE\.antigravity\skills\dev-planner"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md" `
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md" `
   -OutFile "$env:USERPROFILE\.antigravity\skills\dev-planner\SKILL.md"
 ```
 
@@ -111,16 +111,16 @@ Claude Code 通过 `CLAUDE.md` 文件加载上下文指令。
 
 ```bash
 # 在项目根目录下载 SKILL.md，重命名为 CLAUDE.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o CLAUDE.md
 
 # 同时下载模板文件到 references/ 目录
 mkdir -p references
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/dev-doc-template.md \
   -o references/dev-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/api-doc-template.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/api-doc-template.md \
   -o references/api-doc-template.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/style-guide-template.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/style-guide-template.md \
   -o references/style-guide-template.md
 ```
 
@@ -128,11 +128,11 @@ curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-
 
 ```bash
 # Linux / macOS
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o ~/.claude/CLAUDE.md
 
 # Windows（PowerShell）
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md" `
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md" `
   -OutFile "$env:USERPROFILE\.claude\CLAUDE.md"
 ```
 
@@ -146,12 +146,12 @@ Codex CLI 通过项目根目录的 `codex.md` 文件加载指令。
 
 ```bash
 # 在项目根目录执行
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o codex.md
 
 # 下载模板文件
 mkdir -p references
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/references/dev-doc-template.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/references/dev-doc-template.md \
   -o references/dev-doc-template.md
 # （其余模板同上，按需下载）
 ```
@@ -168,7 +168,7 @@ Gemini CLI 通过项目根目录的 `GEMINI.md` 文件加载指令（类似 Clau
 
 ```bash
 # 在项目根目录执行
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o GEMINI.md
 ```
 
@@ -176,7 +176,7 @@ curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-
 
 ```bash
 # Linux / macOS
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o ~/.gemini/GEMINI.md
 ```
 
@@ -188,12 +188,12 @@ Cursor 通过 `.cursorrules` 文件（或新版 `.cursor/rules/` 目录）加载
 
 ```bash
 # 方式一：使用 .cursorrules（旧版兼容）
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o .cursorrules
 
 # 方式二：使用新版规则目录（Cursor 0.43+）
 mkdir -p .cursor/rules
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o .cursor/rules/dev-planner.mdc
 ```
 
@@ -205,7 +205,7 @@ Aider 通过 `--system` 参数或配置文件加载自定义指令。
 
 ```bash
 # 先下载 SKILL.md
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o .aider-skill.md
 
 # 启动时注入
@@ -228,7 +228,7 @@ system: |
 
 ```bash
 # 先下载 SKILL.md 内容
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md \
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md \
   -o /tmp/dev-planner-skill.md
 ```
 
@@ -255,7 +255,7 @@ curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-
 
 ```bash
 # 获取 SKILL.md 内容，复制到剪贴板
-curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/dev-planner/SKILL.md
+curl -L https://raw.githubusercontent.com/cat9999aaa/dev-planner-skill/main/SKILL.md
 ```
 
 将输出内容粘贴到你的工具的「系统提示词」、「自定义指令」或「角色设定」区域即可。
